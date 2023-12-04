@@ -11,14 +11,17 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(kMediumPadding),
-        gradient: Gradients.defaultGradientBackground,
+    return GestureDetector(
+      onTap: ontap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(kMediumPadding),
+          gradient: Gradients.defaultGradientBackground,
+        ),
+        alignment: Alignment.center,
+        child: Text(title, style: TextStyles.defaultStyle.bold.whiteTextColor,),
       ),
-      alignment: Alignment.center,
-      child: Text(title, style: TextStyles.defaultStyle.bold.whiteTextColor,),
     );
   }
 }

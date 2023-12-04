@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:travel_app/core/constants/dim_constants.dart';
 import 'package:travel_app/core/constants/textstyle_constant.dart';
 import 'package:travel_app/core/helpers/asset_helper.dart';
 import 'package:travel_app/core/helpers/image_helpers.dart';
+import 'package:travel_app/core/views/screens/main_app.dart';
 import 'package:travel_app/core/views/widgets/button_widget.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -18,6 +21,17 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   final PageController _pageController = PageController();
 
+  final StreamController<int> _pageStreamController =
+      StreamController<int>.broadcast();
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      _pageStreamController.add(_pageController.page!.toInt());
+    });
+  }
+
   Widget _buildItemIntroScreen(
       String image, String title, String des, AlignmentGeometry align) {
     return Column(
@@ -27,7 +41,7 @@ class _IntroScreenState extends State<IntroScreen> {
           alignment: align,
           child: ImageHelper.loadFromAsset(
             image,
-            height: 500,
+            height: 400,
             fit: BoxFit.fitHeight,
           ),
         ),
@@ -98,10 +112,26 @@ class _IntroScreenState extends State<IntroScreen> {
                         activeDotColor: Colors.orange),
                   ),
                 ),
-                const Expanded(
-                  flex: 3,
-                  child: ButtonWidget(title: 'Next'),
-                )
+                StreamBuilder<int>(
+                    stream: _pageStreamController.stream,
+                    builder: (context, snapshot) {
+                      return Expanded(
+                        flex: 3,
+                        child: ButtonWidget(
+                          title: snapshot.data != 2 ? 'Next' : 'Get started',
+                          ontap: () {
+                            if (_pageController.page != 2) {
+                              _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 400),
+                                  curve: Curves.easeIn);
+                            } else {
+                              Navigator.of(context)
+                                  .pushNamed(MainApp.routeName);
+                            }
+                          },
+                        ),
+                      );
+                    })
               ],
             ))
       ]),
