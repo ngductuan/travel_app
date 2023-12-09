@@ -40,4 +40,6 @@ class AssetHelper {
   static const String turkey = 'assets/images/turkey.png';
   static const String japan = 'assets/images/japan.png';
   static const String dubai = 'assets/images/dubai.png';
+  static const String oval_1 = 'assets/images/oval_1.png';
+  static const String oval_2 = 'assets/images/oval_2.png';
 }
